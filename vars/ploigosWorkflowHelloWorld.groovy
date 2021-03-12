@@ -449,20 +449,6 @@ def call(Map paramsMap) {
                             }
                         }
                     }
-                    stage('CI: Package Application') {
-                        steps {
-                            container("${WORKFLOW_WORKER_NAME_PACKAGE}") {
-                                sh """
-                                    if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
-                                    set -eu -o pipefail
-                                    source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
-                                    psr \
-                                        --config ${PSR_CONFIG_ARG} \
-                                        --step package
-                                """
-                            }
-                        }
-                    }
                     stage('CI: Generate  Metadata Report') {
                         steps {
                             container("${WORKFLOW_WORKER_NAME_CONTAINER_OPERATIONS}") {
