@@ -515,9 +515,7 @@ def call(Map paramsMap) {
                                     set -eu -o pipefail
 
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
-                                    psr \
-                                        --config ${PSR_CONFIG_ARG} \
-                                        --step push-container-image
+                                    echo "hello world"
                                 """
                             }
                         }
