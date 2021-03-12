@@ -355,7 +355,6 @@ def call(Map paramsMap) {
                                         #!/bin/sh
                                         if [ "${VERBOSE}" == "true" ]; then set -x; else set +x; fi
                                         set -eu -o pipefail
-
                                         echo "**********************"
                                         echo "* Create Python venv *"
                                         echo "**********************"
@@ -366,36 +365,28 @@ def call(Map paramsMap) {
                                         #!/bin/sh
                                         if [ "${VERBOSE}" == "true" ]; then set -x; else set +x; fi
                                         set -e -o pipefail
-
                                         if [[ ${UPDATE_STEP_RUNNER_LIBRARY} =~ true|True ]]; then
                                             echo "*********************"
                                             echo "* Update Python Pip *"
                                             echo "*********************"
-
                                             source ${HOME}/${VENV_NAME}/bin/activate
                                             python -m pip install --upgrade pip
-
                                             if [[ ${STEP_RUNNER_LIB_SOURCE_URL} ]]; then
                                                 STEP_RUNNER_LIB_INSTALL_CMD="python -m pip install --upgrade ${STEP_RUNNER_LIB_SOURCE_URL}"
                                             else
                                                 indexUrlFlag=""
-
                                                 if [[ ${STEP_RUNNER_LIB_INDEX_URL} ]]; then
                                                     indexUrlFlag="--index-url ${STEP_RUNNER_LIB_INDEX_URL}"
                                                 fi
-
                                                 extraIndexUrlFlag=""
                                                 if [[ ${STEP_RUNNER_LIB_EXTRA_INDEX_URL} ]]; then
                                                     extraIndexUrlFlag="--extra-index-url  ${STEP_RUNNER_LIB_EXTRA_INDEX_URL}"
                                                 fi
-
                                                 STEP_RUNNER_LIB_INSTALL_CMD="python -m pip install --upgrade ${indexUrlFlag} ${extraIndexUrlFlag} ${STEP_RUNNER_PACKAGE_NAME}"
-
                                                 if [[ ${STEP_RUNNER_LIB_VERSION} ]]; then
                                                     STEP_RUNNER_LIB_INSTALL_CMD+="==${STEP_RUNNER_LIB_VERSION}"
                                                 fi
                                             fi
-
                                             echo "*************************************"
                                             echo "* Update Step Runner Python Package *"
                                             echo "*************************************"
@@ -403,7 +394,6 @@ def call(Map paramsMap) {
                                         else
                                             echo "Using pre-installed Workflow Step Runner library"
                                         fi
-
                                         echo "****************************************************"
                                         echo "* Installed Step Runner Python Package Information *"
                                         echo "****************************************************"
@@ -419,7 +409,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     echo "*******************"
                                     echo "* Import PGP Keys *"
                                     echo "*******************"
@@ -438,7 +427,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -453,7 +441,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -468,7 +455,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -483,7 +469,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -498,7 +483,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -513,20 +497,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
-                                    source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
-                                    echo "hello world"
-                                """
-                            }
-                        }
-                    }
-                    stage('CI: Generate Meta Data Report') {
-                        steps {
-                            container("${WORKFLOW_WORKER_NAME_CONTAINER_OPERATIONS}") {
-                                sh """
-                                    if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
-                                    set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -534,8 +504,20 @@ def call(Map paramsMap) {
                                 """
                             }
                         }
-
                     }
+                    stage('CI: Push Container Image to Repository') {
+                        steps {
+                            container("${WORKFLOW_WORKER_NAME_CONTAINER_OPERATIONS}") {
+                                sh """
+                                    if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
+                                    set -eu -o pipefail
+                                    source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
+                                    echo "Hello World"
+                                """
+                            }
+                        }
+                    }
+                    
                 }
             } // CI Stages
 
@@ -561,7 +543,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -596,7 +577,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
@@ -631,7 +611,6 @@ def call(Map paramsMap) {
                                 sh """
                                     if [ "${params.verbose}" == "true" ]; then set -x; else set +x; fi
                                     set -eu -o pipefail
-
                                     source ${HOME}/${WORKFLOW_WORKER_VENV_NAME}/bin/activate
                                     psr \
                                         --config ${PSR_CONFIG_ARG} \
