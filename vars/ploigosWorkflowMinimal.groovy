@@ -521,7 +521,8 @@ def call(Map paramsMap) {
                                 """
                             }
                         }
-                        stage('CI: Generate Meta Data Report') {
+                    }
+                    stage('CI: Generate Meta Data Report') {
                         steps {
                             container("${WORKFLOW_WORKER_NAME_CONTAINER_OPERATIONS}") {
                                 sh """
