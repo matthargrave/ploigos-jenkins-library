@@ -505,7 +505,7 @@ def call(Map paramsMap) {
                             }
                         }
                     }
-                    stage('CI: Push Container Image to Repository') {
+                    stage('CI: Generate  Metadata Report') {
                         steps {
                             container("${WORKFLOW_WORKER_NAME_CONTAINER_OPERATIONS}") {
                                 sh """
